@@ -55,12 +55,6 @@ public class TrainControllerImpl implements TrainController {
 		enforceSpeedLimit();
 	}
 
-	private void enforceSpeedLimit() {
-		if (referenceSpeed > speedLimit) {
-			referenceSpeed = speedLimit;
-		}
-	}
-
 	@Override
 	public boolean setJoystickPosition(int joystickPosition) {
 		if (joystickPosition > 0 && referenceSpeed == speedLimit){
@@ -68,5 +62,11 @@ public class TrainControllerImpl implements TrainController {
 		}
 		this.step = joystickPosition;
 		return true;
+	}
+
+	private void enforceSpeedLimit() {
+		if (referenceSpeed > speedLimit) {
+			referenceSpeed = speedLimit;
+		}
 	}
 }

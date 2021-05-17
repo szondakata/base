@@ -38,12 +38,9 @@ public class TrainSensorTest {
     }
 
     @Test
-    public void TestReferenceSpeed() {
-        when(mockTC.getReferenceSpeed()).thenReturn(130);
-    }
-
-    @Test
     public void TestSmallerThanHalfSpeedLimit(){
+        when(mockTC.getReferenceSpeed()).thenReturn(130);
+
         TS.overrideSpeedLimit(64);
         verify(mockTU).setAlarmState(true);
     }
