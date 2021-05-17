@@ -7,73 +7,66 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.*;
 
 public class TrainControllerImpl implements TrainController {
+	private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private int step = 0;
-	private int referenceSpeed = 0;
-	private static int speedLimit;
-	private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+	private int referenceSpeed = 130;
+	private int speedLimit;
+
 	final ScheduledFuture<?> speedFollowerHandle;
 
 	public TrainControllerImpl() {
 		final Runnable speedFollower = () -> {
-			System.out.print("run");
+			logger.log(Level.INFO, "run");
 			followSpeed();
 		};
 
+		ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 		speedFollowerHandle = scheduler.scheduleAtFixedRate(speedFollower, 0, 10, TimeUnit.MILLISECONDS );
 	}
-
-	public boolean isAlarm() {
-		return alarm;
-	}
-
-	private boolean alarm = false;
 
 	@Override
 	public void followSpeed() {
 		if (referenceSpeed < 0) {
 			referenceSpeed = 0;
 		} else {
-		    if(referenceSpeed+step > 0) {
+		    if(referenceSpeed + step > 0) {
                 referenceSpeed += step;
             } else {
 		        referenceSpeed = 0;
             }
 		}
-
 		enforceSpeedLimit();
+		logger.log(Level.INFO, String.valueOf(referenceSpeed));
 	}
 
 	@Override
 	public int getReferenceSpeed() {
+		System.out.println(referenceSpeed);
 		return referenceSpeed;
 	}
 
 	@Override
 	public void setSpeedLimit(int speedLimit) {
-		TrainControllerImpl.speedLimit = speedLimit;
+		this.speedLimit = speedLimit;
 		enforceSpeedLimit();
-		
 	}
 
 	private void enforceSpeedLimit() {
 		if (referenceSpeed > speedLimit) {
 			referenceSpeed = speedLimit;
-			raiseAlarm();
 		}
 	}
 
 	@Override
-	public void setJoystickPosition(int joystickPosition) {
+	public boolean setJoystickPosition(int joystickPosition) {
 		if (joystickPosition > 0 && referenceSpeed == speedLimit){
-			raiseAlarm();
+			return false;
 		}
 		this.step = joystickPosition;
-	}
-
-	private void raiseAlarm(){
-		alarm = true;
+		return true;
 	}
 }
