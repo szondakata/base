@@ -6,9 +6,11 @@ import hu.bme.mit.train.interfaces.TrainUser;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import static org.mockito.Mockito.*;
 
-public class TrainSensorTest {
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+
+public class TrainSensorAlarmTest {
     TrainController mockTC;
     TrainUser mockTU;
     TrainSensor TS;

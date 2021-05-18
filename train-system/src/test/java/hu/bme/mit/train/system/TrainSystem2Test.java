@@ -10,7 +10,7 @@ import hu.bme.mit.train.interfaces.TrainSensor;
 import hu.bme.mit.train.interfaces.TrainUser;
 import hu.bme.mit.train.system.TrainSystem;
 
-public class TrainSystemTest2 {
+public class TrainSystem2Test {
 
     TrainController controller;
     TrainSensor sensor;
