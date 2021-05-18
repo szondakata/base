@@ -13,15 +13,15 @@ public class TrainControllerImpl implements TrainController {
 	private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private int step = 0;
-	private int referenceSpeed = 130;
+	private int referenceSpeed = 0;
 	private int speedLimit;
 
 	final ScheduledFuture<?> speedFollowerHandle;
 
 	public TrainControllerImpl() {
 		final Runnable speedFollower = () -> {
-			logger.log(Level.INFO, "run");
 			followSpeed();
+			logger.log(Level.INFO, "followspeed" + referenceSpeed);
 		};
 
 		ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
